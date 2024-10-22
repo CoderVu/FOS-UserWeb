@@ -6,9 +6,11 @@ const OAuth2RedirectHandler = () => {
   const location = useLocation();
 
   useEffect(() => {
+    console.log('Current URL:', window.location.href); // Kiểm tra URL đầy đủ
     const params = new URLSearchParams(location.search);
     const token = params.get('token');
-    console.log('Token1:', token);
+    console.log("params", params);
+  
     if (token) {
       localStorage.setItem('jwtToken', token);
       navigate('/home');
@@ -16,6 +18,7 @@ const OAuth2RedirectHandler = () => {
       navigate('/login');
     }
   }, [navigate, location]);
+  
 
   return <p>Redirecting...</p>;
 };

@@ -11,73 +11,49 @@ const Home = () => {
       const token = localStorage.getItem('jwtToken');
       if (!token) {
         console.error('No token found');
+        navigate('/home');
         return;
       }
 
       try {
-        const response = await axios.get('https://pbl6-fastordersystem.onrender.com/api/v1/auth/user-info-google', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+        const response = await axios.get('http://localhost:8080/api/v1/auth/user-info', {
+          headers: { Authorization: `Bearer ${token}` },
         });
-
         setUserInfo(response.data.data);
       } catch (error) {
         console.error('Error fetching user info:', error);
+        navigate('/home');
       }
     };
 
     fetchUserInfo();
-  }, []);
-  const goToLogin = () => {
-    navigate('/login');
-  };
-
-  const goToLogingg = () => {
-    navigate('/login-google');
-  };
-  const gotoLogginFB = () => {
-    navigate('/login-facebook');
-  };
-
-  const goToAllProducts = () => {
-    navigate('/all-product');
-  };
-
-  const goToAllCartItemOfme = () => {
-    navigate('/all-cart-item-of-me');
-  };
-
-  const goToAllOrder = () => {
-    navigate('/all-order');
-  };
+  }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.clear();
-    navigate('/login'); // Redirect to login after logout
+    localStorage.removeItem('jwtToken');
+    navigate('/login');
   };
-
 
   return (
     <div>
       <h1>Home Page</h1>
-      <button onClick={goToLogin}>Go to Login</button>
-      <button onClick={goToLogingg}>Go to Login Google</button>
-      <button onClick={gotoLogginFB}>Go to Login Facebookk</button>
-      <button onClick={goToAllProducts}>Go to All Products</button>
-      <button onClick={goToAllCartItemOfme}>Go to All Cart Items</button>
-      <button onClick={goToAllOrder}>All Orders</button>
+      <button onClick={() => navigate('/login')}>Go to Login</button>
+      <button onClick={() => navigate('/login-google')}>Login with Google</button>
+      <button onClick={() => navigate('/login-facebook')}>Login with Facebook</button>
+      <button onClick={() => navigate('/all-product')}>View All Products</button>
+      <button onClick={() => navigate('/all-cart-item-of-me')}>View My Cart</button>
+      <button onClick={() => navigate('/all-order')}>View Orders</button>
       <button onClick={handleLogout}>Logout</button>
-      <h2>Home</h2>
+
       {userInfo ? (
         <div>
           <h2>User Info</h2>
           <p>Email: {userInfo.email}</p>
           <p>Full Name: {userInfo.fullName}</p>
-          <p>Avatar: <img src={`data:image/png;base64,${userInfo.avatar}`} alt="Avatar" /></p>
+          <p>
+            Avatar: <img src={`data:image/png;base64,${userInfo.avatar}`} alt="Avatar" />
+          </p>
           <p>Phone Number: {userInfo.phoneNumber}</p>
-          <>Token: {localStorage.getItem('jwtToken')}</>
-          {/* Add more fields as needed */}
         </div>
       ) : (
         <p>Loading user info...</p>
