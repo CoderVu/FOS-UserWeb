@@ -2,7 +2,7 @@ import React from 'react';
 
 const LoginFacebook = () => {
   const handleFacebookLogin = () => {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/facebook';
+    window.location.href = 'https://pbl6-fastordersystem.onrender.com/oauth2/authorization/facebook';
   };
 
   return (
