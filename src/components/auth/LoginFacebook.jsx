@@ -1,14 +1,15 @@
 import React from 'react';
-
+import '../auth/gg.css';
 const LoginFacebook = () => {
   const handleFacebookLogin = () => {
-    window.location.href = 'https://pbl6-fastordersystem.onrender.com/oauth2/authorization/facebook';
+    window.location.href = 'http://localhost:8080/oauth2/authorization/facebook';
   };
 
   return (
     <div>
-      <h1>Login with Facebook</h1>
-      <button onClick={handleFacebookLogin}>Login with Facebook</button>
+      <button className="google-login-button" onClick={handleFacebookLogin}>
+        <i className="fab fa-facebook"></i> Login with Facebook
+      </button>
     </div>
   );
 };

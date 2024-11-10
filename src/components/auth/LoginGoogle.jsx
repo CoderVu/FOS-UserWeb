@@ -4,7 +4,7 @@ import '../auth/gg.css';
 
 const LoginGoogle = () => {
   const handleGoogleLogin = () => {
-    window.location.href = 'https://pbl6-fastordersystem.onrender.com/oauth2/authorization/google';
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
   };
 
   return (

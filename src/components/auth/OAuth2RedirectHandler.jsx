@@ -10,6 +10,7 @@ const OAuth2RedirectHandler = () => {
     const params = new URLSearchParams(location.search);
     const token = params.get('token');
     console.log("params", params);
+    console.log("token", token);
   
     if (token) {
       localStorage.setItem('jwtToken', token);
