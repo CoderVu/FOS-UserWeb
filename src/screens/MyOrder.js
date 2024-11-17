@@ -12,7 +12,7 @@ const MyOrder = () => {
     <Screen>
       <AppHeader title="My Orders" customTitleStyles={{ marginLeft: "35%" }} />
       <ScrollView
-        contentContainerStyle={{ flex: 1, paddingBottom: 30 }}
+        contentContainerStyle={{ paddingBottom: 30 }} // Loại bỏ flex: 1 ở đây
         showsVerticalScrollIndicator={false}
       >
         <Text style={styles.date}>Today</Text>

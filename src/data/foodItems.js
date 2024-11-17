@@ -1,6 +1,6 @@
 export const foodItems = [
   {
-    title: "Burger 1",
+    title: "Burger 11",
     description: "Fresh Burger 1",
     location: "Rabat",
     rating: 4,
@@ -9,7 +9,7 @@ export const foodItems = [
     category: "burger",
   },
   {
-    title: "Burger 2",
+    title: "Burger 23",
     description: "Fresh Burger 2",
     location: "Rabat",
     rating: 4,

@@ -13,9 +13,12 @@ const MyCart = () => {
   return (
     <Screen>
       <SearchHeader />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }} // Thêm flexGrow: 1 vào đây
+        showsVerticalScrollIndicator={false}
+      >
         <AppText customStyles={styles.title} text={"My Cart"} />
-        {foodItems.slice(0, 2).map((item) => (
+        {foodItems.slice(0, 4).map((item) => (
           <CartItem key={item.title} item={item} />
         ))}
         <View style={styles.summaryCard}>
@@ -45,7 +48,7 @@ const MyCart = () => {
           </View>
         </View>
         <Button
-          label={"Ckeckout"}
+          label={"Checkout"}
           customStyles={styles.button}
           customLabelStyles={styles.buttonLabel}
         />

@@ -1,12 +1,14 @@
 import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import React, { useState } from "react";
 import { TabView } from "react-native-tab-view";
-
+import { useSelector, useDispatch } from "react-redux";
 import { categories, foodItems } from "../../data";
 import CategoryItems from "../CategoryItems/CategoryItems";
 import TabBar from "../TabBar/TabBar";
 
 const Tab = () => {
+  
+
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState(

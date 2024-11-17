@@ -10,8 +10,8 @@ const PromotionCard = ({
   promotionText,
   contact,
   website,
-  buttonText,
-  discount,
+
+
 }) => {
   return (
     <View style={styles.container}>
@@ -20,7 +20,7 @@ const PromotionCard = ({
         <View style={styles.promotionTextContainer}>
           <AppText text={promotionText} customStyles={styles.promotionText} />
         </View>
-        <Button label={buttonText} />
+     
         <View style={styles.coordinates}>
           <View style={styles.contactContainer}>
             <Feather name="phone" size={15} color={colors.white} />
@@ -31,17 +31,7 @@ const PromotionCard = ({
             <AppText text={website} customStyles={styles.textWhite} />
           </View>
         </View>
-        <View style={styles.discountContainer}>
-          <AppText
-            text={`${discount}%`}
-            customStyles={[
-              styles.textWhite,
-              {
-                fontFamily: "Lato-Bold",
-              },
-            ]}
-          />
-        </View>
+        
       </View>
     </View>
   );

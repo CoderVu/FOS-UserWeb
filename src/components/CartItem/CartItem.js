@@ -33,7 +33,7 @@ const CartItem = ({ item }) => {
             text={`$${item.price}.00`}
             customStyles={styles.textMedium}
           />
-          <Quantity quantity={2} />
+          <Quantity quantity={1} />
         </View>
       </View>
     </View>

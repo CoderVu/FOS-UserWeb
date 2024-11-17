@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     width: "40%",
     height: "100%",
     borderRadius: 10,
+    marginLeft: 10,
   },
   itemInformations: {
     width: "60%",

@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
-
+import { useNavigation } from '@react-navigation/native';
 import { Feather } from "@expo/vector-icons";
 
 import AppText from "../AppText/AppText";
@@ -8,9 +8,13 @@ import Button from "../Button/Button";
 import { colors } from "../../theme/colors";
 
 const AppHeader = ({ title, customTitleStyles, endButton }) => {
+  const navigate = useNavigation();
+  const handlePress =() => {
+    navigate.goBack();
+  }
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => {}}>
+      <TouchableOpacity style={styles.backButton} onPress={handlePress}>
         <Feather name="chevron-left" color={colors.primary} size={25} />
       </TouchableOpacity>
       <View style={styles.titleContainer}>
@@ -25,6 +29,7 @@ const AppHeader = ({ title, customTitleStyles, endButton }) => {
           customStyles={styles.button}
           customLabelStyles={styles.buttonLabel}
         />
+        
       )}
     </View>
   );
