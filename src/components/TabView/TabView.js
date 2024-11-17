@@ -1,33 +1,68 @@
 import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TabView } from "react-native-tab-view";
 import { useSelector, useDispatch } from "react-redux";
-import { categories, foodItems } from "../../data";
+import { fetchAllCategories } from '../../components/Redux/Action/categoryActions';
 import CategoryItems from "../CategoryItems/CategoryItems";
 import TabBar from "../TabBar/TabBar";
 
 const Tab = () => {
-  
-
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
-  const [routes] = useState(
-    categories.map((category) => ({
-      key: category.toLowerCase(),
-      title: category,
-    }))
-  );
+  const dispatch = useDispatch();
+  const { dataCategories, loading, error } = useSelector((state) => state.category);
 
-  const renderScene = ({ route }) => (
-    <CategoryItems category={route.key} items={foodItems} />
-  );
+  // Fetch category data on component mount
+  useEffect(() => {
+    dispatch(fetchAllCategories());
+  }, [dispatch]);
+
+  const [routes, setRoutes] = useState([]);
+
+  useEffect(() => {
+    if (dataCategories.length > 0) {
+      setRoutes(
+        dataCategories
+          .filter(category => category) 
+          .map((category) => ({
+            key: category.categoryId,
+            title: category.categoryName,
+          }))
+      );
+    }
+  }, [dataCategories]);
+
+  // Đây là hàm tạo ra các tab và render các tab đór
+  const renderScene = ({ route }) => {
+    const selectedCategory = dataCategories.find(
+      (category) => category.categoryId === route.key
+    );
+    const foodItems = selectedCategory ? selectedCategory.foodItems : [];
+    return <CategoryItems categoryId={route.key} items={foodItems} />;
+  };
+
+  const handleIndexChange = (index) => {
+    setIndex(index);
+    const selectedRoute = routes[index];
+    if (selectedRoute) {
+      console.log("Selected Category ID ben tabview:", selectedRoute.key);
+    }
+  };
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (error) {
+    return <Text>{error}</Text>;
+  }
 
   return (
     <TabView
       renderTabBar={(props) => <TabBar {...props} />}
       navigationState={{ index, routes }}
       renderScene={renderScene}
-      onIndexChange={setIndex}
+      onIndexChange={handleIndexChange}
       initialLayout={{ width: layout.width }}
       sceneContainerStyle={styles.sceneContainer}
     />

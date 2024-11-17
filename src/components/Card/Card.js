@@ -2,26 +2,30 @@ import { StyleSheet, Image, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
-import { getAllProducts } from "../../components/Services/ProductService";
 import AppText from "../AppText/AppText";
 import { colors } from "../../theme/colors";
 
 const Card = ({ item }) => {
   const navigation = useNavigation();
 
+
   const handlePress = () => {
     navigation.navigate("Details", {
-      productId: item.id, 
+      productId: item.id,
     });
   };
 
   return (
     <TouchableOpacity style={styles.container} onPress={handlePress}>
       <View style={styles.cardImageContainer}>
-        <Image source={item.image} style={styles.image} />
+        <Image
+          source={{ uri: `data:image/png;base64,${item.image}` }}
+          style={styles.image}
+        />
+
       </View>
       <View style={styles.cardBody}>
-        <AppText text={item.title} customStyles={styles.textBold} />
+        <AppText text={item.productName} customStyles={styles.textBold} />
         <AppText text={item.description} customStyles={styles.textMedium} />
         <View style={[styles.directionRow, styles.cardFooter]}>
           <AppText
@@ -39,7 +43,7 @@ const Card = ({ item }) => {
           <View style={styles.directionRow}>
             <Ionicons name="star" size={15} color={colors.yellow} />
             <AppText
-              text={`(${item.rating}.0)`}
+              text={`(${item.averageRate}.0)`}
               customStyles={styles.textMedium}
             />
           </View>

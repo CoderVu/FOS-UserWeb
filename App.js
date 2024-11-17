@@ -15,6 +15,8 @@ import MyCart from "./src/screens/MyCart";
 import MyOrder from "./src/screens/MyOrder";
 import AppFooter from "./src/components/AppFooter/AppFooter";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Provider } from 'react-redux';
+import store from './src/components/Redux/store/store';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,50 +34,41 @@ export default function App() {
 
   const [isReady, setIsReady] = useState(false);
 
-  // Hide splash screen after fonts are loaded
   useEffect(() => {
-    const prepare = async () => {
-      try {
-        // Wait for fonts to be loaded before hiding splash screen
-        if (fontsLoaded) {
-          await SplashScreen.hideAsync();
-          setIsReady(true);  // Mark app as ready
-        }
-      } catch (e) {
-        console.warn(e);
-      }
-    };
-
-    prepare();
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+      setIsReady(true);
+    }
   }, [fontsLoaded]);
 
-  // If fonts are not loaded yet, don't render the app
-  if (!fontsLoaded || !isReady) {
-    return null;  // Optionally return a loading spinner or splash screen
+  if (!isReady) {
+    return null;
   }
 
   return (
-    <SafeAreaProvider>
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Splash"
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="Splash" component={SplashScreenComponent} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Signup" component={SignupScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Details" component={Details} />
-        <Stack.Screen name="AddPayment" component={AddPayment} />
-        <Stack.Screen name ="Popular" component={Popular} />
-        <Stack.Screen name ="MyCart" component={MyCart} />
-        <Stack.Screen name ="MyOrder" component={MyOrder} />
-      </Stack.Navigator>
-      <AppFooter />
-    </NavigationContainer>
-    </SafeAreaProvider>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Splash"
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="Splash" component={SplashScreenComponent} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Signup" component={SignupScreen} />
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Details" component={Details} />
+            <Stack.Screen name="AddPayment" component={AddPayment} />
+            <Stack.Screen name="Popular" component={Popular} />
+            <Stack.Screen name="MyCart" component={MyCart} />
+            <Stack.Screen name="MyOrder" component={MyOrder} />
+          </Stack.Navigator>
+          <AppFooter />
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </Provider>
   );
 }
 

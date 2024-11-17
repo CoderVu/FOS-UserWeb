@@ -24,13 +24,13 @@ const CartItem = ({ item }) => {
         <View style={styles.directionRow}>
           <AppText text={item.description} customStyles={styles.textMedium} />
           <AppText
-            text={`$${item.price}.00`}
+            text={`$${item.price}.009`}
             customStyles={styles.textMedium}
           />
         </View>
         <View style={styles.directionRow}>
           <AppText
-            text={`$${item.price}.00`}
+            text={`$${item.price}.000`}
             customStyles={styles.textMedium}
           />
           <Quantity quantity={1} />

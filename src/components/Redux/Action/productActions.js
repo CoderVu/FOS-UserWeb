@@ -10,8 +10,8 @@ import {
     fetchAllDrinksService,
     fetchAllProductsService
 
-} from "../../services/productService";
-import { fetchUserDetailByIdService } from "../../services/userService";
+} from "../../Services/ProductService";
+import { fetchUserDetailByIdService } from "../../Services/UserService";
 import { toast } from "react-toastify";
 
 // Best sale
@@ -27,31 +27,33 @@ const fetchProductsBestSale = () => {
             const res = await fetchProductsBestSaleService();
             const data = res && res.data ? res.data.data : [];
             dispatch(fetchProductsBestSaleSuccess(data)); // // Chạy ở đây (2)
-            // console.log(data);
+           // console.log(data);
         } catch (error) {
-            console.log(error);
+            //console.log(error);
         }
     }
 };
 // by idCategory
-const fetchProductsByIdCategorySuccess = (data) => {
+const fetchProductsByIdCategorySuccess = ({ data, categoryId }) => {
     return {
         type: types.FETCH_PRODUCT_BY_ID_CATEGORY_SUCCESS,
-        dataProducts: data
+        dataProducts: data,
+        categoryId,
     };
 };
+
 const fetchProductsByIdCategory = (id) => {
     return async (dispatch, getState) => {
         try {
             const res = await fetchProductsByIdCategoryService(id);
             const data = res && res.data ? res.data.data : [];
-            dispatch(fetchProductsByIdCategorySuccess(data)); // // Chạy ở đây (2)
-            console.log(data);
+            dispatch(fetchProductsByIdCategorySuccess({ data, categoryId: id }));
         } catch (error) {
-            console.log(error);
+            console.error("Error fetching products by category:", error);
         }
-    }
+    };
 };
+
 // fetch all combos
 const fetchAllCombosSuccess = (data) => {
     return {
@@ -65,7 +67,7 @@ const fetchAllCombos = (id) => {
             const res = await fetchAllCombosService();
             const data = res && res.data ? res.data.data : [];
             dispatch(fetchAllCombosSuccess(data)); // // Chạy ở đây (2)
-            console.log(data);
+            // console.log(data);
         } catch (error) {
             console.log(error);
         }
@@ -84,7 +86,7 @@ const fetchAllProducts = (id) => {
             const res = await fetchAllProductsService();
             const data = res && res.data ? res.data.data : [];
             dispatch(fetchAllProductsSuccess(data)); // // Chạy ở đây (2)
-            console.log(data);
+            // console.log(data);
         } catch (error) {
             console.log(error);
         }
@@ -104,7 +106,7 @@ const fetchAllDrinks = (id) => {
             const res = await fetchAllDrinksService();
             const data = res && res.data ? res.data.data : [];
             dispatch(fetchAllDrinksSuccess(data)); // // Chạy ở đây (2)
-            console.log(data);
+            // console.log(data);
         } catch (error) {
             console.log(error);
         }
@@ -124,7 +126,7 @@ const fetchProductById = (id) => {
             const res = await fetchProductByIdService(id);
             const data = res && res.data ? res.data.data[0] : {};
             dispatch(fetchProductByIdSuccess(data)); // // Chạy ở đây (2)
-            console.log(data);
+            // console.log(data);
         } catch (error) {
             console.log(error);
         }
@@ -143,7 +145,7 @@ const fetchComboById = (id) => {
             const res = await fetchComboByIdService(id);
             const data = res && res.data ? res.data.data[0] : {};
             dispatch(fetchComboByIdSuccess(data)); // // Chạy ở đây (2)
-            console.log(data);
+           // console.log(data);
         } catch (error) {
             console.log(error);
         }
@@ -166,7 +168,7 @@ const fetchProductsByIdStore = (id) => {
             const data = res && res.data ? res.data.data : [];
             // Gửi action fetchProductsByIdStoreSuccess với dữ liệu sản phẩm
             dispatch(fetchProductsByIdStoreSuccess(data)); // Chạy ở đây (2)
-            // console.log(data);
+           // console.log(data);
         } catch (error) {
             // In ra lỗi nếu có
             console.log(error);
@@ -197,7 +199,7 @@ const fetchRatingProductById = (id) => {
                 })
             );
             dispatch(fetchRatingProductByIdSuccess(dataRating));
-            console.log('dataRating: ', dataRating);
+          //  console.log('dataRating: ', dataRating);
         } catch (error) {
             console.log(error);
             toast.error('Không lấy được đánh giá sản phẩm!')

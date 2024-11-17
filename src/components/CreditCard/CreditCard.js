@@ -88,6 +88,6 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontFamily: "Lato-Bold",
     fontSize: 15,
-    textTransform: "uppercase",
+    // textTransform: "uppercase",
   },
 });
