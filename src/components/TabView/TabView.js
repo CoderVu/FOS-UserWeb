@@ -25,20 +25,15 @@ const Tab = () => {
         dataCategories
           .filter(category => category) 
           .map((category) => ({
-            key: category.categoryId,
+            key: category.categoryId.toString(),
             title: category.categoryName,
           }))
       );
     }
   }, [dataCategories]);
 
-  // Đây là hàm tạo ra các tab và render các tab đór
   const renderScene = ({ route }) => {
-    const selectedCategory = dataCategories.find(
-      (category) => category.categoryId === route.key
-    );
-    const foodItems = selectedCategory ? selectedCategory.foodItems : [];
-    return <CategoryItems categoryId={route.key} items={foodItems} />;
+    return <CategoryItems categoryId={route.key} />;
   };
 
   const handleIndexChange = (index) => {
@@ -74,7 +69,6 @@ export default Tab;
 const styles = StyleSheet.create({
   sceneContainer: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+  
   },
 });

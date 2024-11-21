@@ -41,9 +41,10 @@ export default SearchHeader;
 const styles = StyleSheet.create({
   header: {
     width: "100%",
+
     paddingTop: 20,
     paddingHorizontal: 20,
-    paddingBottom: 40,
+    paddingBottom: 20,
     flexDirection: "row",
     alignItems: "center",
   },

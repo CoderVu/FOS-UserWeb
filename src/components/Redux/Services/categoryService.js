@@ -1,4 +1,4 @@
-import axios from "../../setup/axios";
+import axios from "../../../setup/axios";
 
 const fetchAllCategoriesService = () => {
     return axios({

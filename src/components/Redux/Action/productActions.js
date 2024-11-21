@@ -10,8 +10,8 @@ import {
     fetchAllDrinksService,
     fetchAllProductsService
 
-} from "../../Services/ProductService";
-import { fetchUserDetailByIdService } from "../../Services/UserService";
+} from "../../Redux/Services/ProductService";
+import { fetchUserDetailByIdService } from "../../Redux/Services/UserService";
 import { toast } from "react-toastify";
 
 // Best sale

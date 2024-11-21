@@ -1,5 +1,5 @@
 import types from "../types";
-import { fetchAllCategoriesService } from "../../Services/categoryService";
+import { fetchAllCategoriesService } from "../../Redux/Services/categoryService";
 
 
 // Thunk: fetching data

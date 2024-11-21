@@ -10,7 +10,6 @@ const SectionTitle = ({ title, customStyles, customTitleStyles, popular }) => {
       <AppText text={title} customStyles={[styles.title, customTitleStyles]} />
       {popular && (
         <Button
-          label={"See All"}
           customStyles={styles.button}
           customLabelStyles={styles.buttonLabel}
         />
@@ -24,13 +23,15 @@ export default SectionTitle;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+
+    height: 50,
     alignItems: "center",
   },
   title: {
     color: colors.primary,
     fontFamily: "Lato-Black",
     fontSize: 25,
-    paddingVertical: 20,
+    paddingVertical: 10,
   },
   button: {
     flex: 0,

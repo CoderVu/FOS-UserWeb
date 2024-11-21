@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Colors from '../theme/mycolors';
 import BigText from '../theme/BigText';
 import AppTextField from '../theme/AppTextField';
-import { Login} from "../components/Services/AuthService";
+import { Login} from "../components/Redux/Services/AuthService";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = () => {
