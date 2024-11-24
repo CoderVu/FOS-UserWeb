@@ -5,12 +5,13 @@ const INITIAL_STATE = {
     listProductsByIdCategory: [],
     allCombos: [],
     allProducts: [],
-    productDetail: {},  
+    allProductsBySearchQuery: [],
+    productDetail: {},
     comboDetail: {},
     listProductsByIdStore: [],
     ratingProduct: [],
     allDrinks: [],
-    productsByCategory: {}, 
+    productsByCategory: {},
     loading: false,
     error: null,
 };
@@ -87,8 +88,19 @@ const productReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 ratingProduct: action.dataRatingProduct,
             };
-        default: 
+        case types.FETCH_PRODUCT_BY_SEARCH_QUERY_SUCCESS:
+            return {
+                ...state,
+                allProductsBySearchQuery: action.dataProducts,
+            };
+        case types.CLEAR_SEARCH_RESULTS:
+            return {
+                ...state,
+                allProductsBySearchQuery: [],
+            };
+        default:
             return state;
+
     }
 };
 

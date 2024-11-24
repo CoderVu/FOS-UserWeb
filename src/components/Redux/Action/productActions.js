@@ -8,7 +8,8 @@ import {
     fetchProductsByIdStoreService,
     fetchRatingProductByIdService,
     fetchAllDrinksService,
-    fetchAllProductsService
+    fetchAllProductsService,
+    fetchProductsBySearchQueryService
 
 } from "../../Redux/Services/ProductService";
 import { fetchUserDetailByIdService } from "../../Redux/Services/UserService";
@@ -206,6 +207,25 @@ const fetchRatingProductById = (id) => {
         }
     }
 };
+const fetchProductsBySearchQuerySuccess = (data) => {
+    return {
+        type: types.FETCH_PRODUCT_BY_SEARCH_QUERY_SUCCESS,
+        dataProducts: data
+    };
+};
+const fetchProductBySearch= (query) => {
+    return async (dispatch, getState) => {
+        try {
+            const res = await fetchProductsBySearchQueryService(query);
+            const data = res && res.data ? res.data.data : [];
+            dispatch(fetchProductsBySearchQuerySuccess(data)); // // Chạy ở đây (2)
+            // console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
 export {
     fetchProductsBestSale,
     fetchProductsByIdCategory,
@@ -215,6 +235,7 @@ export {
     fetchProductsByIdStore,
     fetchRatingProductById,
     fetchComboById,
-    fetchAllProducts
+    fetchAllProducts,
+    fetchProductBySearch
 
 }

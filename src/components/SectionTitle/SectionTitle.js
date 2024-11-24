@@ -23,9 +23,9 @@ export default SectionTitle;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-
-    height: 50,
+    height: 40,
     alignItems: "center",
+    
   },
   title: {
     color: colors.primary,

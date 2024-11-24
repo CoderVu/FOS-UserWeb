@@ -63,7 +63,7 @@ export default PromotionCard;
 
 const styles = StyleSheet.create({
   slide: {
-    height: 120,
+    height: 100,
   },
   image: {
     width: "100%",

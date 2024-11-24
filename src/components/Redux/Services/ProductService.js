@@ -55,6 +55,14 @@ const fetchRatingProductByIdService = (id) => {
         url: `/api/v1/public/rate/product/${id}`,
     });
 }
+const fetchProductsBySearchQueryService = (query) => {
+    return axios({
+        method: 'get',
+        url: `/api/v1/public/products/search/${query}`,
+    
+    });
+};
+
 
 export {
     fetchProductsBestSaleService,
@@ -65,6 +73,7 @@ export {
     fetchComboByIdService,
     fetchProductsByIdStoreService,
     fetchRatingProductByIdService,
-    fetchAllProductsService
+    fetchAllProductsService,
+    fetchProductsBySearchQueryService,
 
 }

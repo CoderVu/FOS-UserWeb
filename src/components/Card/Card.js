@@ -11,34 +11,61 @@ const API_KEY = '5b3ce3597851110001cf624888c86f18453143d7892cff533a74a371';
 const Card = ({ item }) => {
   const navigation = useNavigation();
   const [location, setLocation] = useState("Loading...");
+  const [storeIndex, setStoreIndex] = useState(0); // Track the current store index
+  const [storeLocations, setStoreLocations] = useState([]);
+  
   // Giới hạn độ dài của mô tả (10 ký tự) và địa chỉ (5 ký tự)
   const descriptionText = item.description.length > 30 ? item.description.slice(0, 30) + '...' : item.description;
   const locationText = location.length > 5 ? location.slice(0, 5) + '...' : location;
 
   useEffect(() => {
     console.log('Starting geocoding request...');
-    if (item?.stores && item.stores.length > 0) {
-      const store = item.stores[0];
+    const fetchLocation = async (store) => {
       const { latitude, longitude } = store;
       console.log('Location:', latitude, longitude);
       if (latitude && longitude) {
-        fetch(`https://api.openrouteservice.org/geocode/reverse?point.lat=${latitude}&point.lon=${longitude}&api_key=${API_KEY}`)
-          .then(response => response.json())
-          .then(data => {
-            if (data?.features?.length > 0) {
-              const address = data.features[0].properties.county;
-              setLocation(address);
-            } else {
-              setLocation("Loading...");
-            }
-          })
-          .catch(error => {
-            console.warn("Geocoding error: ", error);
-            setLocation("Error retrieving address");
-          });
+        try {
+          const response = await fetch(`https://api.openrouteservice.org/geocode/reverse?point.lat=${latitude}&point.lon=${longitude}&api_key=${API_KEY}`);
+          const data = await response.json();
+          if (data?.features?.length > 0) {
+            const address = data.features[0].properties.county;
+            return address;
+          } else {
+            return "Loading...";
+          }
+        } catch (error) {
+          console.warn("Geocoding error: ", error);
+          return "Error retrieving address";
+        }
       }
+    };
+
+    // Fetch location for all stores
+    if (item?.stores && item.stores.length > 0) {
+      const storeAddresses = [];
+      item.stores.forEach((store) => {
+        const address = fetchLocation(store);
+        storeAddresses.push(address);
+      });
+      setStoreLocations(storeAddresses);
     }
   }, [item]);
+
+  // Change store every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStoreIndex((prevIndex) => (prevIndex + 1) % item.stores.length);
+    }, 10000); // Change every 10 seconds
+
+    return () => clearInterval(interval); // Clean up interval on unmount
+  }, [item.stores.length]);
+
+  // Update location text based on the current store
+  useEffect(() => {
+    if (storeLocations.length > 0) {
+      setLocation(storeLocations[storeIndex]);
+    }
+  }, [storeIndex, storeLocations]);
 
   const handlePress = () => {
     console.log("Navigating to Details for productId:", item.id);
@@ -75,7 +102,8 @@ const Card = ({ item }) => {
           {/* Address */}
           <View style={styles.iconTextContainer}>
             <Ionicons name="location" size={13} color={colors.primary} />
-            <AppText text={location} customStyles={styles.textMedium} />
+            <AppText text={locationText} customStyles={styles.textMedium} />
+
           </View>
         </View>
       </View>

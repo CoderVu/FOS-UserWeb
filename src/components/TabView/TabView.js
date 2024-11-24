@@ -12,7 +12,6 @@ const Tab = () => {
   const dispatch = useDispatch();
   const { dataCategories, loading, error } = useSelector((state) => state.category);
 
-  // Fetch category data on component mount
   useEffect(() => {
     dispatch(fetchAllCategories());
   }, [dispatch]);
@@ -21,6 +20,7 @@ const Tab = () => {
 
   useEffect(() => {
     if (dataCategories.length > 0) {
+      console.log("Data Categories ben tabview:", dataCategories.length);
       setRoutes(
         dataCategories
           .filter(category => category) 
@@ -31,10 +31,6 @@ const Tab = () => {
       );
     }
   }, [dataCategories]);
-
-  const renderScene = ({ route }) => {
-    return <CategoryItems categoryId={route.key} />;
-  };
 
   const handleIndexChange = (index) => {
     setIndex(index);
@@ -53,22 +49,26 @@ const Tab = () => {
   }
 
   return (
-    <TabView
-      renderTabBar={(props) => <TabBar {...props} />}
-      navigationState={{ index, routes }}
-      renderScene={renderScene}
-      onIndexChange={handleIndexChange}
-      initialLayout={{ width: layout.width }}
-      sceneContainerStyle={styles.sceneContainer}
-    />
+    <View style={styles.container}>
+      <TabView
+        renderTabBar={(props) => <TabBar {...props} />}
+        navigationState={{ index, routes }}
+        renderScene={({ route }) => <CategoryItems categoryId={route.key} />}
+        onIndexChange={handleIndexChange}
+        initialLayout={{ width: layout.width }}
+        sceneContainerStyle={styles.sceneContainer}
+      />
+    </View>
   );
 };
 
 export default Tab;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   sceneContainer: {
     flex: 1,
-  
   },
 });

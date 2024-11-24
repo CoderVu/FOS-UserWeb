@@ -3,9 +3,6 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import Card from './Card';
 
 const CardList = ({ items = [] }) => {
-  // Check if there is only one item
-
-
   return (
     <FlatList
       key={items.length}
