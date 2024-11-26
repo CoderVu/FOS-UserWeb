@@ -1,4 +1,4 @@
-import { StyleSheet, Image, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Image, View, TouchableOpacity, Animated } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
@@ -13,6 +13,7 @@ const Card = ({ item }) => {
   const [location, setLocation] = useState("Loading...");
   const [storeIndex, setStoreIndex] = useState(0); // Track the current store index
   const [storeLocations, setStoreLocations] = useState([]);
+  const scale = useState(new Animated.Value(1))[0]; // Animation state for scaling the card
   
   // Giới hạn độ dài của mô tả (10 ký tự) và địa chỉ (5 ký tự)
   const descriptionText = item.description.length > 30 ? item.description.slice(0, 30) + '...' : item.description;
@@ -67,6 +68,22 @@ const Card = ({ item }) => {
     }
   }, [storeIndex, storeLocations]);
 
+  const handlePressIn = () => {
+    // Scale the card up when the user presses it
+    Animated.spring(scale, {
+      toValue: 1.05, // Scale up slightly
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    // Reset scale when the user releases the press
+    Animated.spring(scale, {
+      toValue: 1, // Reset to original scale
+      useNativeDriver: true,
+    }).start();
+  };
+
   const handlePress = () => {
     console.log("Navigating to Details for productId:", item.id);
     navigation.navigate("Details", {
@@ -75,13 +92,20 @@ const Card = ({ item }) => {
   };
 
   return (
-    <TouchableOpacity style={[styles.container, { alignSelf: 'flex-start' }]} onPress={handlePress}>
-      <View style={styles.cardImageContainer}>
+    <TouchableOpacity
+      style={[styles.container, { alignSelf: 'flex-start' }]}
+      onPressIn={handlePressIn}  // Trigger animation when pressed
+      onPressOut={handlePressOut} // Reset animation when released
+      onPress={handlePress}
+    >
+      <Animated.View
+        style={[styles.cardImageContainer, { transform: [{ scale }] }]} // Apply scale animation
+      >
         <Image
           source={{ uri: `data:image/png;base64,${item.image}` }}
           style={styles.image}
         />
-      </View>
+      </Animated.View>
       <View style={styles.cardBody}>
         {/* Product Name and Rating in Row */}
         <View style={styles.nameRatingContainer}>
@@ -103,7 +127,6 @@ const Card = ({ item }) => {
           <View style={styles.iconTextContainer}>
             <Ionicons name="location" size={13} color={colors.primary} />
             <AppText text={locationText} customStyles={styles.textMedium} />
-
           </View>
         </View>
       </View>
@@ -112,32 +135,48 @@ const Card = ({ item }) => {
 };
 
 export default Card;
-
 const styles = StyleSheet.create({
   container: {
     width: "48%", // Adjust width for better spacing between items
-    marginBottom: 15, // Add space between rows
+    marginHorizontal: "2%", // Add space between items
+    marginTop: 10, // Add space between rows
+    marginLeft: 2, // Offset the margin for the first item in the row
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: colors.white,
+    borderRadius: 15, // Smooth corner radius
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 6, // Android shadow
+    overflow: "hidden",
+    backgroundImage: "linear-gradient(to top, #fff, #f7f8fa)", // Gradient background
   },
   cardImageContainer: {
     width: "100%",
-    height: 120, // Keep the height consistent
-    borderRadius: 20,
+    height: 130, // Consistent height
+    borderRadius: 15,
+    overflow: "hidden", // Clip the image to the border radius
   },
   priceText: {
     color: colors.primary,
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: "Lato-Bold",
-    padding: 1,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    backgroundColor: colors.lightPrimary, // Subtle background for price
+    borderRadius: 8,
   },
   image: {
     width: "100%",
     height: "100%",
     borderRadius: 10,
+    resizeMode: "cover", // Ensure proper scaling
   },
   cardBody: {
     marginTop: 10,
+    paddingHorizontal: 10,
     width: "100%",
     justifyContent: "space-between",
   },
@@ -148,30 +187,26 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   cardFooter: {
-    marginTop: 5,
-    marginBottom: 5, 
+    marginTop: 8,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     width: "100%",
-    flexWrap: "wrap", // Allow wrapping to avoid overflow
   },
   iconTextContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginRight: 5, // Reduce margin for items to be closer together
-    marginLeft: 5,  // Reduce margin for items to be closer together
+    marginLeft: 5,
   },
   textMedium: {
     color: colors.medium,
-    fontFamily: "Lato-Bold",
+    fontFamily: "Lato-Regular",
     fontSize: 12,
-    marginLeft: 2,
-    padding: 1,
+    marginLeft: 4,
   },
   textBold: {
     fontFamily: "Lato-Black",
     color: colors.dark,
-    marginLeft: 4,
+    fontSize: 16, // Larger font for emphasis
   },
 });

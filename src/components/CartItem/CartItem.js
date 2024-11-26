@@ -22,7 +22,7 @@ const CartItem = ({ item }) => {
           </View>
         </View>
         <View style={styles.directionRow}>
-          <AppText text={item.description} customStyles={styles.textMedium} />
+          <AppText text={item.data.description} customStyles={styles.textMedium} />
           <AppText
             text={`$${item.price}.009`}
             customStyles={styles.textMedium}

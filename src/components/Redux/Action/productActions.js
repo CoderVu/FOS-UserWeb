@@ -219,7 +219,7 @@ const fetchProductBySearch= (query) => {
             const res = await fetchProductsBySearchQueryService(query);
             const data = res && res.data ? res.data.data : [];
             dispatch(fetchProductsBySearchQuerySuccess(data)); // // Chạy ở đây (2)
-            // console.log(data);
+    
         } catch (error) {
             console.log(error);
         }

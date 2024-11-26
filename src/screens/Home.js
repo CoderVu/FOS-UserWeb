@@ -1,25 +1,23 @@
-import { StyleSheet, View, ScrollView, Text } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { StyleSheet, View, Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useState, useEffect } from "react";
-import { useNavigation } from '@react-navigation/native';
 import Screen from "../components/Screen/Screen";
 import PromotionCard from "../components/PromotionCard/PromotionCard";
 import SectionTitle from "../components/SectionTitle/SectionTitle";
-import TabView from "../components/TabView/TabView";
+import Tab from "../components/TabView/TabView";
 import SearchHeader from "../components/SearchHeader/SearchHeader";
 import { fetchProductBySearch } from "../components/Redux/Action/productActions";
-import CardList from "../components/Card/CardList";
+import CardSearch from "../components/Card/CardSearch";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
-
   const searchResults = useSelector((state) => state.product.allProductsBySearchQuery);
   const loading = useSelector((state) => state.product.loading);
   const error = useSelector((state) => state.product.error);
 
-  const [searchQuery, setSearchQuery] = useState(""); // Trạng thái tìm kiếm
-  const [results, setResults] = useState([]); // Trạng thái kết quả tìm kiếm
+  const [searchQuery, setSearchQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const cardSearchRef = useRef(null);
 
   const slides = [
     {
@@ -43,49 +41,54 @@ const Home = () => {
   ];
 
   const handleSearch = (query) => {
-    setSearchQuery(query); // Cập nhật searchQuery
+    setSearchQuery(query);
     if (query.length > 0) {
-      dispatch(fetchProductBySearch(query)); // Fetch kết quả tìm kiếm nếu query không trống
+      dispatch(fetchProductBySearch(query));
     } else {
-      setResults([]); // Nếu query trống, xóa kết quả tìm kiếm
-      console.log("Search query length is now 0");
+      setResults([]);
     }
   };
-  
 
   useEffect(() => {
-    console.log("Query length:", searchQuery.length); // In độ dài của searchQuery
     if (searchQuery.trim() === "") {
-      setResults([]); // Nếu searchQuery rỗng, đặt results thành mảng rỗng
+      setResults([]);
     } else {
-      setResults(searchResults); // Nếu có searchQuery, cập nhật kết quả tìm kiếm
+      setResults(searchResults);
+      if (cardSearchRef.current) {
+        cardSearchRef.current.scrollToTop();
+      }
     }
   }, [searchQuery, searchResults]);
-  
+
+  const isSearching = searchQuery && results.length > 0;
+
   return (
     <Screen>
       <SearchHeader onSearch={handleSearch} />
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <View style={styles.container}>
         <View style={styles.promotionContainer}>
           <PromotionCard slides={slides} />
         </View>
 
-        {!searchQuery || (searchQuery && results.length === 0) ? (
+        {!isSearching && (
           <View style={styles.categories}>
             <SectionTitle title="Danh mục sản phẩm" popular />
-            <TabView />
-          </View>
-        ) : null}
-
-        {searchQuery && results.length > 0 && (
-          <View style={styles.searchResults}>
-            <CardList items={results} />
+             <Tab />
           </View>
         )}
 
+        {isSearching && (
+          <View style={styles.searchResults}>
+            <CardSearch
+              ref={cardSearchRef}
+              items={results}
+              nestedScrollEnabled={true} // cho phép cuộn 
+            />
+          </View>
+        )}
         {loading && <Text>Loading...</Text>}
         {error && <Text>Error: {error}</Text>}
-      </ScrollView>
+      </View>
     </Screen>
   );
 };
@@ -93,8 +96,8 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
-  scrollViewContent: {
-    flexGrow: 1,
+  container: {
+    flex: 1,
   },
   promotionContainer: {
     marginBottom: 20,
@@ -104,6 +107,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   searchResults: {
-    padding: 20,
+    padding: 10,
+    flex: 1,
   },
 });

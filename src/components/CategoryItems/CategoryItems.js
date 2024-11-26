@@ -1,9 +1,8 @@
-// CategoryItems.js
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductsByIdCategory } from '../../components/Redux/Action/productActions';
-import { FlatList, StyleSheet, Text } from "react-native";
-import CardList from "../Card/CardList";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import Card from "../Card/Card"; 
 
 const CategoryItems = ({ categoryId }) => {
     const dispatch = useDispatch();
@@ -17,7 +16,8 @@ const CategoryItems = ({ categoryId }) => {
         }
     }, [categoryId, dispatch]);
 
-    const categoryItems = productsByCategory[categoryId];
+    const categoryItems = productsByCategory[categoryId] || []; // Đảm bảo có giá trị mặc định
+
     if (loading) {
         return <Text>Loading...</Text>;
     }
@@ -27,25 +27,38 @@ const CategoryItems = ({ categoryId }) => {
     }
 
     return (
+        <View style={styles.container}>
         <FlatList
-        style={styles.container}
-        contentContainerStyle={styles.contentContainerStyle}
-        data={[{ key: 'list', items: categoryItems }]} 
-        renderItem={({ item }) => <CardList items={item.items} />} 
-        keyExtractor={(item) => item.key}
-      />
+
+            data={categoryItems} // Truyền trực tiếp danh sách sản phẩm
+            renderItem={({ item }) => (
+                <Card item={item} /> // Hiển thị mỗi sản phẩm với Card
+            )}
+            keyExtractor={(item) => item.productId.toString()} 
+            numColumns={2} // Hiển thị 2 cột
+            columnWrapperStyle={styles.row} 
+            contentContainerStyle={styles.container}
+   
+         
+        />
+        </View>
     );
 };
 
 export default CategoryItems;
 
+
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-
+      paddingHorizontal: 10, 
     },
-    contentContainerStyle: {
-        alignItems: "center",
-        justifyContent: "center",
+    row: {
+      justifyContent: 'space-between', 
+      marginBottom: 15, 
     },
-});
+    card: {
+      flex: 1,
+      margin: 5,
+      borderRadius: 10, 
+    },
+  });
