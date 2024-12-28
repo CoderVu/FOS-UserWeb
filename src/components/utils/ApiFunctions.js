@@ -16,6 +16,7 @@ export const loginGoogle = async () => {
     console.error(error);
   }
 }
+
 export const allProducts = async () => {
   try {
     const response = await axios.get("/api/v1/public/products/all");

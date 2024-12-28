@@ -2,7 +2,7 @@ import React from 'react';
 import '../auth/gg.css';
 const LoginFacebook = () => {
   const handleFacebookLogin = () => {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/facebook';
+    window.location.href = 'https://food-app-gvbhgyfabjcthbhd.southeastasia-01.azurewebsites.net/oauth2/authorization/facebook';
   };
 
   return (

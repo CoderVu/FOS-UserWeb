@@ -4,7 +4,7 @@ import '../auth/gg.css';
 
 const LoginGoogle = () => {
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    window.location.href = 'https://food-app-gvbhgyfabjcthbhd.southeastasia-01.azurewebsites.net/oauth2/authorization/google';
   };
 
   return (

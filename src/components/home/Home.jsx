@@ -16,7 +16,7 @@ const Home = () => {
       }
 
       try {
-        const response = await axios.get('http://localhost:8080/api/v1/auth/user-info', {
+        const response = await axios.get('https://food-app-gvbhgyfabjcthbhd.southeastasia-01.azurewebsites.net/api/v1/auth/user-info', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUserInfo(response.data.data);
